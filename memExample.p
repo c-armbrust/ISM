@@ -20,14 +20,16 @@
 #define PRU_EVTOUT_0    3        // the event number that is sent back
 
 START:
-	SET	r30.t5           // turn on the output pin (LED on)
+	SET	r30.t5           // turn on the output pin (LED on) P9_27
+	SET	r30.t1		 // turn on the output pin P9_29
 	MOV     r3, 0x00000000   // Move address of Data RAM0 to r3
 	LBBO    r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Offset = 0 bytes, size of data = 4 byte
 DELAYON:
 	SUB	r0, r0, 1        // Decrement REG0 by 1
 	QBNE	DELAYON, r0, 0   // Loop to DELAYON, unless REG0=0
 LEDOFF: 
-	CLR	r30.t5           // clear the output bin (LED off)
+	CLR	r30.t5           // clear the output pin (LED off) P9_27
+	CLR	r30.t1           // clear the output pin P9_29
 	MOV     r3, 0x00000004
 	LBBO	r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Offset = 4 bytes, size of data = 4 byte
 DELAYOFF:
