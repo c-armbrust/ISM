@@ -31,12 +31,12 @@ int main (void)
 
    // Pulse delay
    // Write a byte into PRU0 Data RAM0. Offset = 0 Bytes, Data Bytes = 4
-   unsigned int pulsedelay = 0x00000032; // 50 (dec) => 500ns
+   unsigned int pulsedelay = 0x000186A0;//0x00000032; // 50 (dec) => 500ns
    pruDataMem[0] = pulsedelay;
 
    // Pause delay
    // Write a byte into PRU0 Data RAM0. Offset = 4 Bytes, Data Bytes = 4
-   unsigned int pausedelay = 0x000003E8; // 1000 (dec) => 10us
+   unsigned int pausedelay = 0x05F5E100;//0x000003E8; // 1000 (dec) => 10us
    pruDataMem[1] = pausedelay;
 
    // Map PRU's interrupts
