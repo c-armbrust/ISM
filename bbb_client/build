@@ -1,3 +1,4 @@
 #!/bin/sh
 pasm -b pulse.p
-gcc main.c -o ismclient -lpthread -lprussdrv
+make
+#g++  main.cpp -std=c++14 -o ismclient -lpthread -lprussdrv
