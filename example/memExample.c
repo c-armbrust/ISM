@@ -1,7 +1,5 @@
-/** Program to load a PRU program that flashes an LED until a button is
-*   pressed. By Derek Molloy, for the book Exploring BeagleBone
-*   based on the example code at:
-*   http://processors.wiki.ti.com/index.php/PRU_Linux_Application_Loader_API_Guide
+/* 
+* In-situ-Microscopy BeagleBone Black client 
 */
 
 #include <stdio.h>
