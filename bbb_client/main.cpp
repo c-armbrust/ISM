@@ -30,15 +30,20 @@ int main (void)
    unsigned int* pruDataMem;
    prussdrv_map_prumem(PRUSS0_PRU0_DATARAM, (void**)&pruDataMem);
 
-   // Pulse delay
+   // Trigger duration
    // Write a byte into PRU0 Data RAM0. Offset = 0 Bytes, Data Bytes = 4
-   unsigned int pulsedelay = 0x000186A0;//0x00000032; // 50 (dec) => 500ns
-   pruDataMem[0] = pulsedelay;
+   unsigned int triggerduration = 0x000186A0; // 1ms - 100000 (dec)
+   pruDataMem[0] = triggerduration;
 
-   // Pause delay
+   // Pulse duration
    // Write a byte into PRU0 Data RAM0. Offset = 4 Bytes, Data Bytes = 4
-   unsigned int pausedelay = 0x05F5E100;//0x000003E8; // 1000 (dec) => 10us
-   pruDataMem[1] = pausedelay;
+   unsigned int pulseduration = 0x00000064; // 4us - 400 (dec)
+   pruDataMem[1] = pulseduration;
+
+   // Pause duration
+   // Write a byte into PRU0 Data RAM0. Offset = 8 Bytes, Data Bytes = 4
+   unsigned int pauseduration = 0x02FAF080;//0x05F5E100; // 1s - 100000000 (dec)
+   pruDataMem[2] = pauseduration;
 
    // Map PRU's interrupts
    prussdrv_pruintc_init(&pruss_intc_initdata);

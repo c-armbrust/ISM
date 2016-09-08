@@ -20,22 +20,48 @@
 #define PRU_EVTOUT_0    3        // the event number that is sent back
 
 START:
-	SET	r30.t5           // turn on the output pin (LED on) P9_27
-	SET	r30.t1		 // turn on the output pin P9_29
-	MOV     r3, 0x00000000   // Move address of Data RAM0 to r3
-	LBBO    r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Offset = 0 bytes, size of data = 4 byte
-DELAYON:
-	SUB	r0, r0, 1        // Decrement REG0 by 1
-	QBNE	DELAYON, r0, 0   // Loop to DELAYON, unless REG0=0
-LEDOFF: 
-	CLR	r30.t5           // clear the output pin (LED off) P9_27
-	CLR	r30.t1           // clear the output pin P9_29
-	MOV     r3, 0x00000004
-	LBBO	r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Offset = 4 bytes, size of data = 4 byte
-DELAYOFF:
-	SUB	r0, r0, 1        // decrement REG0 by 1
-	QBNE	DELAYOFF, r0, 0  // Loop to DELAYOFF, unless REG0=0
+//	SET	r30.t5           // turn on the output pin (LED on) P9_27
+//	SET	r30.t1		    // turn on the output pin P9_29
+//	CLR	r30.t5           // clear the output pin (LED off) P9_27
+//	CLR	r30.t1           // clear the output pin P9_29
 
+
+
+// Trigger duration (is pulse delay at the same time)
+	MOV     r3, 0x00000000   // Move address of Data RAM0 to r3
+	LBBO    r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Read with Offset = 0 bytes, size of data = 4 byte
+
+    SET	r30.t1		 // turn on the output pin P9_29
+TRIGGERDURATION:
+	SUB	r0, r0, 1        // Decrement REG0 by 1
+	QBNE	TRIGGERDURATION, r0, 0   // Loop to TRIGGERDURATION, unless REG0=0
+    CLR	r30.t1           // clear the output pin P9_29
+
+
+
+// Pulse duration
+	MOV     r3, 0x00000004 // Move address of Data RAM0 with offset 4 byte to r3
+	LBBO	r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Read with Offset = 0 bytes, size of data = 4 byte
+
+    SET	r30.t5           // turn on the output pin (LED on) P9_27
+PULSEDURATION:
+	SUB	r0, r0, 1        // decrement REG0 by 1
+	QBNE	PULSEDURATION, r0, 0  // Loop to PULSEDURATION, unless REG0=0
+    CLR	r30.t5           // clear the output pin (LED off) P9_27
+
+
+
+// Pause duration
+    MOV     r3, 0x00000008   // Move address of Data RAM0 with offset 8 byte to r3
+    LBBO	r0, r3, 0, 4     // Read the value from address stored in r3 to register r0. Read with  Offset = 0 bytes, size of data = 4 byte
+
+PAUSEDURATION:
+    SUB r0, r0, 1   // decrement REG0 by 1
+    QBNE    PAUSEDURATION, r0, 0    // Loop to PAUSEDURATION, unless REG0=0
+    
+
+
+// terminate?
 	QBBC	START, r31.t3    // is the button pressed? If not, loop
 
 END:                             // notify the calling app that finished
